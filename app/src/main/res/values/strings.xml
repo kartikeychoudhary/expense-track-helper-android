@@ -1,0 +1,40 @@
+<resources>
+    <string name="app_name">Where My Buck Goes Helper</string>
+    <string name="splash_text">Track your expenses</string>
+
+
+    <!-- Where My Buck Goes Helper Strings -->
+    <string name="wheremybuckgoes_title">Where My Buck Goes Helper</string>
+    <string name="config_title">Configuration</string>
+    <string name="expand">Expand</string>
+    <string name="collapse">Collapse</string>
+    <string name="backend_url">Backend URL</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="sender_list">Sender Names/Numbers</string>
+    <string name="fetch_senders">Fetch Senders</string>
+    <string name="select_senders">Select Senders</string>
+    <string name="selected_senders">Selected Senders: %1$d</string>
+    <string name="no_senders_selected">No senders selected</string>
+    <string name="search_senders">Search senders…</string>
+    <string name="no_search_results">No senders match your search</string>
+    <string name="clear_search">Clear search</string>
+    <string name="save_data">Save Data</string>
+    <string name="fetch_token">Fetch Token</string>
+    <string name="sms_messages">SMS</string>
+    <string name="fetch_sms">Fetch</string>
+    <string name="no_sms_found">No SMS messages found</string>
+    <string name="send">Send</string>
+    <string name="from">From: %1$s</string>
+    <string name="permission_required">SMS Permission Required</string>
+    <string name="permission_rationale">This app needs permission to read SMS messages to function properly.</string>
+    <string name="grant_permission">Grant Permission</string>
+
+    <!-- Time Filter Options -->
+    <string name="time_filter">Time Filter</string>
+    <string name="today">Today</string>
+    <string name="yesterday">Yesterday</string>
+    <string name="last_7_days">Last 7 Days</string>
+    <string name="this_month">This Month</string>
+    <string name="last_month">Last Month</string>
+</resources>
