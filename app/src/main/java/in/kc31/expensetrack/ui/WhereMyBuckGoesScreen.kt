@@ -553,7 +553,9 @@ fun WhereMyBuckGoesScreen(
                         }
                     }
 
-                    if (uiState is UiState.Loading) {
+                    // Only show loading indicator for global operations like fetching SMS list
+                    // Individual SMS operations (send/hide) show loading on their own cards
+                    if (uiState is UiState.Loading && isSendingSms == null && isHidingSms == null) {
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()

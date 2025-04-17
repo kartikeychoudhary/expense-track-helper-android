@@ -321,7 +321,7 @@ class WhereMyBuckGoesViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 _isSendingSms.value = smsData.id
-                _uiState.value = UiState.Loading
+                // Don't set global loading state, just track which SMS is being sent
 
                 val serverUrl = _serverUrl.value
                 if (serverUrl.isEmpty()) {
@@ -351,10 +351,16 @@ class WhereMyBuckGoesViewModel : ViewModel() {
 
                     _uiState.value = UiState.Success("SMS content sent successfully")
                 } else {
-                    _uiState.value = UiState.Error("Failed to send SMS content: ${response.message()}")
+                    // Get error code and message
+                    val errorCode = response.code().toString()
+                    val errorMessage = response.message() ?: "Unknown error"
+                    // Show error toast with error code and message
+                    _uiState.value = UiState.Error("Failed to send SMS content: [Code: $errorCode] $errorMessage")
                 }
             } catch (e: Exception) {
-                _uiState.value = UiState.Error("Failed to send SMS content: ${e.message}")
+                // Handle exception case
+                val errorMessage = e.message ?: "Unknown error"
+                _uiState.value = UiState.Error("Failed to send SMS content: [Code: EXC] $errorMessage")
             } finally {
                 _isSendingSms.value = null
             }
@@ -365,6 +371,7 @@ class WhereMyBuckGoesViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 _isHidingSms.value = smsData.id
+                // Don't set global loading state, just track which SMS is being hidden
 
                 // Remove the SMS from the list without sending to server
                 val updatedList = _smsList.value.toMutableList()
