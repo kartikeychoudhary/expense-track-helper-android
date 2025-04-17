@@ -40,6 +40,9 @@ class WhereMyBuckGoesViewModel : ViewModel() {
     private val _isSendingSms = MutableStateFlow<String?>(null) // Stores SMS ID being sent
     val isSendingSms: StateFlow<String?> = _isSendingSms.asStateFlow()
 
+    private val _isHidingSms = MutableStateFlow<String?>(null) // Stores SMS ID being hidden
+    val isHidingSms: StateFlow<String?> = _isHidingSms.asStateFlow()
+
     private val _serverUrl = MutableStateFlow("")
     val serverUrl: StateFlow<String> = _serverUrl.asStateFlow()
 
@@ -354,6 +357,28 @@ class WhereMyBuckGoesViewModel : ViewModel() {
                 _uiState.value = UiState.Error("Failed to send SMS content: ${e.message}")
             } finally {
                 _isSendingSms.value = null
+            }
+        }
+    }
+
+    fun hideSmsMessage(smsData: SmsData) {
+        viewModelScope.launch {
+            try {
+                _isHidingSms.value = smsData.id
+
+                // Remove the SMS from the list without sending to server
+                val updatedList = _smsList.value.toMutableList()
+                updatedList.removeIf { it.id == smsData.id }
+                _smsList.value = updatedList
+
+                // Mark as hidden in preferences to prevent it from showing up again
+                userPreferences.saveSentSmsId(smsData.id)
+
+                _uiState.value = UiState.Success("SMS hidden successfully")
+            } catch (e: Exception) {
+                _uiState.value = UiState.Error("Failed to hide SMS: ${e.message}")
+            } finally {
+                _isHidingSms.value = null
             }
         }
     }

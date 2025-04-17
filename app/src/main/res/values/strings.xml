@@ -25,6 +25,7 @@
     <string name="fetch_sms">Fetch</string>
     <string name="no_sms_found">No SMS messages found</string>
     <string name="send">Send</string>
+    <string name="hide">Hide</string>
     <string name="from">From: %1$s</string>
     <string name="permission_required">SMS Permission Required</string>
     <string name="permission_rationale">This app needs permission to read SMS messages to function properly.</string>

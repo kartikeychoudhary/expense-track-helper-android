@@ -105,6 +105,7 @@ fun WhereMyBuckGoesScreen(
     val isFetchingSenders by viewModel.isFetchingSenders.collectAsState()
     val isFetchingSms by viewModel.isFetchingSms.collectAsState()
     val isSendingSms by viewModel.isSendingSms.collectAsState()
+    val isHidingSms by viewModel.isHidingSms.collectAsState()
 
     // State for configuration section expansion
     var isConfigExpanded by remember { mutableStateOf(true) }
@@ -580,7 +581,9 @@ fun WhereMyBuckGoesScreen(
                                 SmsItem(
                                     sms = sms,
                                     onSendClick = { viewModel.sendSmsContent(sms) },
-                                    isSendingSms = isSendingSms
+                                    onHideClick = { viewModel.hideSmsMessage(sms) },
+                                    isSendingSms = isSendingSms,
+                                    isHidingSms = isHidingSms
                                 )
                                 HorizontalDivider()
                             }
@@ -631,7 +634,9 @@ fun WhereMyBuckGoesScreen(
 fun SmsItem(
     sms: `in`.kc31.expensetrack.data.model.SmsData,
     onSendClick: () -> Unit,
-    isSendingSms: String?
+    onHideClick: () -> Unit,
+    isSendingSms: String?,
+    isHidingSms: String?
 ) {
     Column(
         modifier = Modifier
@@ -661,18 +666,38 @@ fun SmsItem(
                 }
             }
 
-            TextButton(
-                onClick = onSendClick,
-                enabled = isSendingSms == null || isSendingSms != sms.id
-            ) {
-                if (isSendingSms == sms.id) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(16.dp),
-                        strokeWidth = 2.dp
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
+            Row {
+                // Hide button
+                TextButton(
+                    onClick = onHideClick,
+                    enabled = (isHidingSms == null || isHidingSms != sms.id) &&
+                             (isSendingSms == null || isSendingSms != sms.id)
+                ) {
+                    if (isHidingSms == sms.id) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(16.dp),
+                            strokeWidth = 2.dp
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+                    }
+                    Text(stringResource(R.string.hide))
                 }
-                Text(stringResource(R.string.send))
+
+                // Send button
+                TextButton(
+                    onClick = onSendClick,
+                    enabled = (isSendingSms == null || isSendingSms != sms.id) &&
+                             (isHidingSms == null || isHidingSms != sms.id)
+                ) {
+                    if (isSendingSms == sms.id) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(16.dp),
+                            strokeWidth = 2.dp
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+                    }
+                    Text(stringResource(R.string.send))
+                }
             }
         }
 
